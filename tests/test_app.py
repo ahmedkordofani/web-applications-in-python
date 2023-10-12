@@ -96,3 +96,42 @@ def test_post_albums(db_connection, web_client):
                        "Album 2(2, My Beautiful Dark Twisted Fantasy, 2010, 1)"
     assert get_response.data.decode('utf-8') == expected_response
 
+
+
+def test_get_artists(web_client):
+    # Test GET /artists route
+    get_response = web_client.get('/artists')
+
+    # Ensure the status code is 200 OK
+    assert get_response.status_code == 200
+
+    # Ensure the response content is a comma-separated string
+    response_data = get_response.data.decode('utf-8')
+    assert isinstance(response_data, str)
+
+    # Ensure that the artists from the response match the sample artists
+    expected_artists = "Pixies, ABBA, Taylor Swift, Nina Simone"
+    assert response_data == expected_artists
+
+def test_post_artist(db_connection, web_client):
+    # Clear any existing data in the artists table and reset the sequence
+    db_connection.execute("TRUNCATE artists RESTART IDENTITY;")
+
+    # Test POST /artists route to add a new artist
+    post_response = web_client.post("/artists", data={
+        'name': 'Wild nothing',
+        'genre': 'Indie'
+    })
+
+    # Ensure the status code is 200 OK
+    assert post_response.status_code == 200
+    assert post_response.data.decode('utf-8') == ""
+
+    # Test GET /artists to verify the new artist was added
+    get_response = web_client.get('/artists')
+    assert get_response.status_code == 200
+
+    # Ensure the response content includes the newly added artist
+    response_data = get_response.data.decode('utf-8')
+    assert 'Wild nothing' in response_data
+

@@ -85,7 +85,29 @@ def get_albums():
 
     return "\n".join(album_strings)
 
-    
+
+
+# Sample list of artists
+artists = ["Pixies", "ABBA", "Taylor Swift", "Nina Simone"]
+
+@app.route('/artists', methods=['GET'])
+def get_artists():
+    return ', '.join(artists), 200
+
+@app.route('/artists', methods=['POST'])
+def create_artist():
+    data = request.form
+    name = data.get('name')
+    genre = data.get('genre')
+
+    if name and genre:
+        artists.append(name)
+        return '', 200
+    else:
+        return 'Invalid request', 400
+
+
+
     
 
 # This imports some more example routes for you to see how they work

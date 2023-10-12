@@ -4,7 +4,7 @@
 -- database state, and that tests don't interfere with each other.
 
 -- First, we must delete (drop) all our tables
-DROP TABLE IF EXISTS albums;
+DROP TABLE IF EXISTS albums, artists;
 DROP SEQUENCE IF EXISTS albums_id_seq;
 
 -- Then, we recreate them
@@ -16,5 +16,11 @@ CREATE TABLE albums (
   artist_id int
 );
 
+CREATE TABLE artists (
+  id SERIAL PRIMARY KEY,
+  name text,
+  genre text
+);
+
 -- Finally, we add any records that are needed for the tests to run
-INSERT INTO albums (title, release_year, artist_id) VALUES ('Graduation', 2007, 1)
+INSERT INTO albums (title, release_year, artist_id) VALUES ('Graduation', 2007, 1);
