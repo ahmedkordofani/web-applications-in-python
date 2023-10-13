@@ -1,5 +1,5 @@
 import unittest
-from app import app, artists  # Import the artists list
+from app_1 import app, artists  # Import the artists list
 
 class ArtistsRouteTest(unittest.TestCase):
     def setUp(self):
